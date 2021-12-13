@@ -1,0 +1,104 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --board-square-size: 100px;
+  --token-size: calc(var(--board-square-size) * 0.9);
+  --x-token-color: #ff4b4b;
+  --o-token-color: #2d93f3;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #fefefe;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.board-square {
+  border: 1px solid #444;
+  width: var(--board-square-size);
+  height: var(--board-square-size);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  cursor: pointer;
+}
+
+.game-board > :nth-child(1),
+.game-board > :nth-child(2),
+.game-board > :nth-child(3) {
+  border-top: none;
+}
+
+.game-board > :nth-child(3),
+.game-board > :nth-child(6),
+.game-board > :nth-child(9) {
+  border-right: none;
+}
+
+.game-board > :nth-child(1),
+.game-board > :nth-child(4),
+.game-board > :nth-child(7) {
+  border-left: none;
+}
+
+.game-board > :nth-child(7),
+.game-board > :nth-child(8),
+.game-board > :nth-child(9) {
+  border-bottom: none;
+}
+
+.board-square.x::before,
+.board-square.x::after {
+  content: '';
+  position: absolute;
+  width: calc(var(--token-size) * 0.15);
+  height: var(--token-size);
+  background-color: var(--x-token-color);
+}
+
+.board-square.x::before {
+  transform: rotate(45deg);
+}
+
+.board-square.x::after {
+  transform: rotate(-45deg);
+}
+
+.board-square.o::before,
+.board-square.o::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  width: var(--token-size);
+  height: var(--token-size);
+  background-color: var(--o-token-color);
+}
+
+.board-square.o::after {
+  transform: scale(0.7);
+  background-color: #fefefe;
+}
+
+.board-square.o::before {
+  transform: scale(0.95);
+}
+
+.board-square.x,
+.board-square.o {
+  cursor: not-allowed;
+}
