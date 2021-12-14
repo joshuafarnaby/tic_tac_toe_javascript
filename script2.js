@@ -62,9 +62,8 @@ const gameController = (function () {
   const playerOne = playerFactory('Player 1', 'x');
   const playerTwo = playerFactory('Player 2', 'o');
 
-  const playerOneTurn = true;
-  const currentPlayer = playerOneTurn ? playerOne : playerTwo;
-  const turnsTaken = 0;
+  let playerOneTurn = true;
+  let turnsTaken = 0;
 
   const internalGameboard = gameboard.internalGameboard();
   const externalGameboard = gameboard.externalGameboard();
@@ -80,8 +79,12 @@ const gameController = (function () {
     const targetPosition = event.target.getAttribute('data-square');
 
     if (positionFree(internalGameboard, targetPosition)) {
+      let currentPlayer = playerOneTurn ? playerOne : playerTwo;
+
       currentPlayer.takeTurn(internalGameboard, targetPosition);
       updateExternalGameboard(targetPosition, currentPlayer.getToken());
+      playerOneTurn = !playerOneTurn;
+      turnsTaken++
     }
   }
 
