@@ -12,4 +12,16 @@ const playerFactory = (name, token) => {
   }
 }
 
-const playerOne = playerFactory('John', 'x');
+const gameboard = (function () {
+  const _internalGameboard = ['', '', '', '', '', '', '', '', ''];
+  const _externalGameboard = document.querySelectorAll('[data-square]');
+
+  const internalGameboard = () => _internalGameboard;
+  const externalGameboard = () => Array.from(_externalGameboard);
+
+  return {
+    internalGameboard,
+    externalGameboard
+  }
+})();
+
