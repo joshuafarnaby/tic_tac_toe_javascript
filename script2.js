@@ -14,24 +14,37 @@ const playerFactory = (name, token) => {
 
 const gameboard = (function () {
   const _internalGameboard = ['', '', '', '', '', '', '', '', ''];
-  const _externalGameboard = document.querySelectorAll('[data-square]');
+  const _externalGameboard = Array.from(document.querySelectorAll('[data-square]'));
 
   const internalGameboard = () => _internalGameboard;
-  const externalGameboard = () => Array.from(_externalGameboard);
+  const externalGameboard = () => _externalGameboard;
 
   const updateExternalGameboard = (targetPosition, token) => {
     _externalGameboard[targetPosition].classList.add(token);
   }
 
+  const resetGameboard = () => {
+    _internalGameboard.forEach((element, idx, arr) => arr[idx] = '');
+
+    _externalGameboard.forEach(element => {
+      if (element.classList.contains('x')) {
+        element.classList.remove('x');
+      } else if (element.classList.contains('o')) {
+        element.classList.remove('o')
+      }
+    });
+  }
+
   return {
     internalGameboard,
     externalGameboard,
-    updateExternalGameboard
+    updateExternalGameboard,
+    resetGameboard
   }
 })();
 
 const gameRules = (function () {
-  const WINNING_COMBINATIONS = [
+  const _WINNING_COMBINATIONS = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -43,7 +56,7 @@ const gameRules = (function () {
   ]
 
   const winningMove = (gameboard, token) => {
-    return WINNING_COMBINATIONS.some(combination => {
+    return _WINNING_COMBINATIONS.some(combination => {
       return combination.every(position => {
         return gameboard[position] == token;
       })
@@ -56,7 +69,28 @@ const gameRules = (function () {
     winningMove,
     positionFree
   }
-})()
+})();
+
+const gameResultObj = (function () {
+  const _gameResultContainer = document.getElementById('game-result-container');
+  const _gameResultText = document.getElementById('game-result-text');
+  const restartBtn = document.getElementById('restart-btn');
+
+  const showGameResult = function (winner) {
+    _gameResultText.innerText = `${winner.toUpperCase()} IS THE WINNER!`;
+    _gameResultContainer.classList.add('show');
+  }
+
+  const hideGameResult = function () {
+    _gameResultContainer.classList.remove('show');
+  }
+
+  return {
+    showGameResult,
+    hideGameResult,
+    restartBtn
+  }
+})();
 
 const gameController = (function () {
   const playerOne = playerFactory('Player 1', 'x');
@@ -68,27 +102,40 @@ const gameController = (function () {
   const internalGameboard = gameboard.internalGameboard();
   const externalGameboard = gameboard.externalGameboard();
 
-  const { updateExternalGameboard } = gameboard
+  const { updateExternalGameboard, resetGameboard } = gameboard;
+  const { showGameResult, hideGameResult, restartBtn } = gameResultObj;
   
   const {
     winningMove,
     positionFree
   } = gameRules;
 
+  const resetGame = () => {
+    playerOneTurn = true,
+    turnsTaken = 0;
+    hideGameResult();
+    resetGameboard();
+    restartBtn.removeEventListener('click', resetGame)
+  }
+
   const initiateTurn = (event) => {
     const targetPosition = event.target.getAttribute('data-square');
+    let currentPlayer = playerOneTurn ? playerOne : playerTwo;
 
     if (positionFree(internalGameboard, targetPosition)) {
-      let currentPlayer = playerOneTurn ? playerOne : playerTwo;
-
       currentPlayer.takeTurn(internalGameboard, targetPosition);
       updateExternalGameboard(targetPosition, currentPlayer.getToken());
       playerOneTurn = !playerOneTurn;
       turnsTaken++
     }
+
+    if (turnsTaken >= 5 && winningMove(internalGameboard, currentPlayer.getToken())) {
+      showGameResult(currentPlayer.getName());
+      restartBtn.addEventListener('click', resetGame)
+    }
   }
 
-  externalGameboard.forEach(element => {
-    element.addEventListener('click', initiateTurn)
-  })
+  externalGameboard.forEach(element => element.addEventListener('click', initiateTurn));
+
+
 })();
