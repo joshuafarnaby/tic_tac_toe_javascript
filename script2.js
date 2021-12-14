@@ -76,7 +76,7 @@ const gameResultObj = (function () {
   const _gameResultText = document.getElementById('game-result-text');
   const restartBtn = document.getElementById('restart-btn');
 
-  const showGameResult = function (winner) {
+  const showGameWinner = function (winner) {
     _gameResultText.innerText = `${winner.toUpperCase()} IS THE WINNER!`;
     _gameResultContainer.classList.add('show');
   }
@@ -86,7 +86,7 @@ const gameResultObj = (function () {
   }
 
   return {
-    showGameResult,
+    showGameWinner,
     hideGameResult,
     restartBtn
   }
@@ -103,7 +103,7 @@ const gameController = (function () {
   const externalGameboard = gameboard.externalGameboard();
 
   const { updateExternalGameboard, resetGameboard } = gameboard;
-  const { showGameResult, hideGameResult, restartBtn } = gameResultObj;
+  const { showGameWinner, hideGameResult, restartBtn } = gameResultObj;
   
   const {
     winningMove,
@@ -115,7 +115,7 @@ const gameController = (function () {
     turnsTaken = 0;
     hideGameResult();
     resetGameboard();
-    restartBtn.removeEventListener('click', resetGame)
+    restartBtn.removeEventListener('click', resetGame);
   }
 
   const initiateTurn = (event) => {
@@ -130,8 +130,12 @@ const gameController = (function () {
     }
 
     if (turnsTaken >= 5 && winningMove(internalGameboard, currentPlayer.getToken())) {
-      showGameResult(currentPlayer.getName());
+      showGameWinner(currentPlayer.getName());
       restartBtn.addEventListener('click', resetGame)
+    }
+
+    if (turnsTaken >= 9 && !winningMove(internalGameboard, currentPlayer.getToken())) {
+
     }
   }
 
