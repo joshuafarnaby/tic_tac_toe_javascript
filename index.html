@@ -10,17 +10,28 @@
   <title>TIC TAC TOE</title>
 </head>
 <body>
-  <div id="game-board"  class="game-board">
-    <div class="board-square" data-square="0"></div>
-    <div class="board-square" data-square="1"></div>
-    <div class="board-square" data-square="2"></div>
-    <div class="board-square" data-square="3"></div>
-    <div class="board-square" data-square="4"></div>
-    <div class="board-square" data-square="5"></div>
-    <div class="board-square" data-square="6"></div>
-    <div class="board-square" data-square="7"></div>
-    <div class="board-square" data-square="8"></div>
+  <div id="main-content-wrapper" class="main-content-wrapper">
+    <div id="player1-container" class="player-container">
+      <div class="board-square x"></div>
+      <h3>PLAYER 1</h3>
+    </div>
+    <div id="game-board"  class="game-board">
+      <div class="board-square" data-square="0"></div>
+      <div class="board-square" data-square="1"></div>
+      <div class="board-square" data-square="2"></div>
+      <div class="board-square" data-square="3"></div>
+      <div class="board-square" data-square="4"></div>
+      <div class="board-square" data-square="5"></div>
+      <div class="board-square" data-square="6"></div>
+      <div class="board-square" data-square="7"></div>
+      <div class="board-square" data-square="8"></div>
+    </div>
+    <div id="player2-container" class="player-container">
+      <div class="board-square o"></div>
+      <h3>PLAYER 2</h3>
+    </div>
   </div>
+
   <div id="game-result-container" class="game-result-container hide">
     <p id="game-result-text" class="game-result-text">Lorem ipsum dolor sit amet.</p>
     <button id="restart-btn" class="restart-btn">RESTART GAME</button>

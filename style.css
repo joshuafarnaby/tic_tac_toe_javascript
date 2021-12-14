@@ -27,10 +27,29 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.main-content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20vh;
+  gap: 10vw;
+}
+
+.player-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.player-container .board-square {
+  border: none;
+}
+
 .game-board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin-top: 20vh;
+  /* margin-top: 20vh; */
 }
 
 .board-square {
