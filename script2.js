@@ -23,6 +23,12 @@ const gameboard = (function () {
     _externalGameboard[targetPosition].classList.add(token);
   }
 
+  const disableExternalGameboard = () => {
+    _externalGameboard.forEach(element => {
+      element.style.pointerEvents = 'none'
+    });
+  };
+
   const resetGameboard = () => {
     _internalGameboard.forEach((element, idx, arr) => arr[idx] = '');
 
@@ -39,6 +45,7 @@ const gameboard = (function () {
     internalGameboard,
     externalGameboard,
     updateExternalGameboard,
+    disableExternalGameboard,
     resetGameboard
   }
 })();
@@ -108,7 +115,12 @@ const gameController = (function () {
   const internalGameboard = gameboard.internalGameboard();
   const externalGameboard = gameboard.externalGameboard();
 
-  const { updateExternalGameboard, resetGameboard } = gameboard;
+  const { 
+    updateExternalGameboard,
+    disableExternalGameboard, 
+    resetGameboard 
+  } = gameboard;
+
   const { 
     showGameWinner, 
     showDraw,
@@ -142,6 +154,7 @@ const gameController = (function () {
 
     if (turnsTaken >= 5 && winningMove(internalGameboard, currentPlayer.getToken())) {
       showGameWinner(currentPlayer.getName());
+      disableExternalGameboard(initiateTurn);
       restartBtn.addEventListener('click', resetGame);
     }
 
@@ -152,6 +165,4 @@ const gameController = (function () {
   }
 
   externalGameboard.forEach(element => element.addEventListener('click', initiateTurn));
-
-
 })();
