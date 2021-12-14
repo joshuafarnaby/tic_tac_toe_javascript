@@ -23,10 +23,12 @@ const gameboard = (function () {
     _externalGameboard[targetPosition].classList.add(token);
   }
 
+  const enableExternalGameboard = () => {
+    _externalGameboard.forEach(element => element.style.pointerEvents = 'auto');
+  }
+
   const disableExternalGameboard = () => {
-    _externalGameboard.forEach(element => {
-      element.style.pointerEvents = 'none'
-    });
+    _externalGameboard.forEach(element => element.style.pointerEvents = 'none');
   };
 
   const resetGameboard = () => {
@@ -45,6 +47,7 @@ const gameboard = (function () {
     internalGameboard,
     externalGameboard,
     updateExternalGameboard,
+    enableExternalGameboard,
     disableExternalGameboard,
     resetGameboard
   }
@@ -117,6 +120,7 @@ const gameController = (function () {
 
   const { 
     updateExternalGameboard,
+    enableExternalGameboard,
     disableExternalGameboard, 
     resetGameboard 
   } = gameboard;
@@ -139,6 +143,7 @@ const gameController = (function () {
     hideGameResult();
     resetGameboard();
     restartBtn.removeEventListener('click', resetGame);
+    enableExternalGameboard()
   }
 
   const initiateTurn = (event) => {
