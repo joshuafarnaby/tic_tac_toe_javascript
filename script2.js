@@ -1,6 +1,10 @@
 const playerFactory = (name, token) => {
+  let score = 0;
+
   const getName = () => name;
   const getToken = () => token;
+  const getScore = () => score;
+  const increaseScore = () => score++
   const takeTurn = (gameboard, position) => {
     gameboard[position] = token
   }
@@ -8,6 +12,8 @@ const playerFactory = (name, token) => {
   return {
     getName,
     getToken,
+    getScore,
+    increaseScore,
     takeTurn
   }
 }
@@ -112,12 +118,31 @@ const gameResultObj = (function () {
   }
 })();
 
+const externalScoreboard = (function () {
+  const _playerOneScoreText = document.getElementById('player-one-score');
+  const _playerTwoScoreText = document.getElementById('player-two-score');
+
+  const updateExternalScoreboard = (player, score) => {
+    if (player == 'Player 1') {
+      _playerOneScoreText.innerText = score;
+    } else {
+      _playerTwoScoreText.innerText = score;
+    }
+  }
+
+  return {
+    updateExternalScoreboard
+  }
+})();
+
 const gameController = (function () {
   const playerOne = playerFactory('Player 1', 'x');
   const playerTwo = playerFactory('Player 2', 'o');
 
   let playerOneTurn = true;
   let turnsTaken = 0;
+
+  const { updateExternalScoreboard } = externalScoreboard;
 
   const internalGameboard = gameboard.internalGameboard();
   const externalGameboard = gameboard.externalGameboard();
@@ -163,8 +188,11 @@ const gameController = (function () {
 
     if (turnsTaken >= 5 && winningMove(internalGameboard, currentPlayer.getToken())) {
       showGameWinner(currentPlayer.getName());
+      currentPlayer.increaseScore();
+      updateExternalScoreboard(currentPlayer.getName(), currentPlayer.getScore())
       disableExternalGameboard(initiateTurn);
       restartBtn.addEventListener('click', resetGame);
+
     }
 
     if (turnsTaken >= 9 && !winningMove(internalGameboard, currentPlayer.getToken())) {
