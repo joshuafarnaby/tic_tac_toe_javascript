@@ -88,16 +88,20 @@ const gameResultObj = (function () {
 
   const showGameWinner = function (winner) {
     _gameResultText.innerText = `${winner.toUpperCase()} IS THE WINNER!`;
+    _gameResultContainer.classList.remove('hide');
     _gameResultContainer.classList.add('show');
   }
 
   const showDraw = () => {
     _gameResultText.innerText = 'IT\'S A DRAW!';
+    _gameResultContainer.classList.remove('hide');
     _gameResultContainer.classList.add('show');
   }
 
   const hideGameResult = function () {
     _gameResultContainer.classList.remove('show');
+    _gameResultContainer.classList.add('hide');
+
   }
 
   return {
