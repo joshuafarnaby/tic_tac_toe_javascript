@@ -81,6 +81,11 @@ const gameResultObj = (function () {
     _gameResultContainer.classList.add('show');
   }
 
+  const showDraw = () => {
+    _gameResultText.innerText = 'IT\'S A DRAW!';
+    _gameResultContainer.classList.add('show');
+  }
+
   const hideGameResult = function () {
     _gameResultContainer.classList.remove('show');
   }
@@ -88,6 +93,7 @@ const gameResultObj = (function () {
   return {
     showGameWinner,
     hideGameResult,
+    showDraw,
     restartBtn
   }
 })();
@@ -103,7 +109,12 @@ const gameController = (function () {
   const externalGameboard = gameboard.externalGameboard();
 
   const { updateExternalGameboard, resetGameboard } = gameboard;
-  const { showGameWinner, hideGameResult, restartBtn } = gameResultObj;
+  const { 
+    showGameWinner, 
+    showDraw,
+    hideGameResult, 
+    restartBtn 
+  } = gameResultObj;
   
   const {
     winningMove,
@@ -131,11 +142,12 @@ const gameController = (function () {
 
     if (turnsTaken >= 5 && winningMove(internalGameboard, currentPlayer.getToken())) {
       showGameWinner(currentPlayer.getName());
-      restartBtn.addEventListener('click', resetGame)
+      restartBtn.addEventListener('click', resetGame);
     }
 
     if (turnsTaken >= 9 && !winningMove(internalGameboard, currentPlayer.getToken())) {
-
+      showDraw();
+      restartBtn.addEventListener('click', resetGame);
     }
   }
 
