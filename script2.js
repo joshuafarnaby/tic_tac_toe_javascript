@@ -19,9 +19,14 @@ const gameboard = (function () {
   const internalGameboard = () => _internalGameboard;
   const externalGameboard = () => Array.from(_externalGameboard);
 
+  const updateExternalGameboard = (targetPosition, token) => {
+    _externalGameboard[targetPosition].classList.add(token);
+  }
+
   return {
     internalGameboard,
-    externalGameboard
+    externalGameboard,
+    updateExternalGameboard
   }
 })();
 
@@ -59,9 +64,12 @@ const gameController = (function () {
 
   const playerOneTurn = true;
   const currentPlayer = playerOneTurn ? playerOne : playerTwo;
+  const turnsTaken = 0;
 
   const internalGameboard = gameboard.internalGameboard();
   const externalGameboard = gameboard.externalGameboard();
+
+  const { updateExternalGameboard } = gameboard
   
   const {
     winningMove,
@@ -69,8 +77,12 @@ const gameController = (function () {
   } = gameRules;
 
   const initiateTurn = (event) => {
-    const targetPosition = event.target.getAttribute('data-square')
-    console.log(targetPosition);
+    const targetPosition = event.target.getAttribute('data-square');
+
+    if (positionFree(internalGameboard, targetPosition)) {
+      currentPlayer.takeTurn(internalGameboard, targetPosition);
+      updateExternalGameboard(targetPosition, currentPlayer.getToken());
+    }
   }
 
   externalGameboard.forEach(element => {
