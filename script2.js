@@ -52,3 +52,28 @@ const gameRules = (function () {
     positionFree
   }
 })()
+
+const gameController = (function () {
+  const playerOne = playerFactory('Player 1', 'x');
+  const playerTwo = playerFactory('Player 2', 'o');
+
+  const playerOneTurn = true;
+  const currentPlayer = playerOneTurn ? playerOne : playerTwo;
+
+  const internalGameboard = gameboard.internalGameboard();
+  const externalGameboard = gameboard.externalGameboard();
+  
+  const {
+    winningMove,
+    positionFree
+  } = gameRules;
+
+  const initiateTurn = (event) => {
+    const targetPosition = event.target.getAttribute('data-square')
+    console.log(targetPosition);
+  }
+
+  externalGameboard.forEach(element => {
+    element.addEventListener('click', initiateTurn)
+  })
+})();
