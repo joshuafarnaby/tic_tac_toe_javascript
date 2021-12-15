@@ -21,9 +21,21 @@ const playerFactory = (name, token) => {
 const gameboard = (function () {
   const _internalGameboard = ['', '', '', '', '', '', '', '', ''];
   const _externalGameboard = Array.from(document.querySelectorAll('[data-square]'));
+  const _externalGameboardParent = _externalGameboard[0].parentElement;
+
+  _externalGameboardParent.classList.add('x');
 
   const internalGameboard = () => _internalGameboard;
   const externalGameboard = () => _externalGameboard;
+  const toggleExternalGameboardClass = () => {
+    if (_externalGameboardParent.classList.contains('x')) {
+      _externalGameboardParent.classList.remove('x');
+      _externalGameboardParent.classList.add('o')
+    } else if (_externalGameboardParent.classList.contains('o')) {
+      _externalGameboardParent.classList.remove('o');
+      _externalGameboardParent.classList.add('x');
+    }
+  }
 
   const updateExternalGameboard = (targetPosition, token) => {
     _externalGameboard[targetPosition].classList.add(token);
@@ -52,6 +64,7 @@ const gameboard = (function () {
   return {
     internalGameboard,
     externalGameboard,
+    toggleExternalGameboardClass,
     updateExternalGameboard,
     enableExternalGameboard,
     disableExternalGameboard,
@@ -147,7 +160,8 @@ const gameController = (function () {
   const internalGameboard = gameboard.internalGameboard();
   const externalGameboard = gameboard.externalGameboard();
 
-  const { 
+  const {
+    toggleExternalGameboardClass,
     updateExternalGameboard,
     enableExternalGameboard,
     disableExternalGameboard, 
@@ -182,6 +196,7 @@ const gameController = (function () {
     if (positionFree(internalGameboard, targetPosition)) {
       currentPlayer.takeTurn(internalGameboard, targetPosition);
       updateExternalGameboard(targetPosition, currentPlayer.getToken());
+      toggleExternalGameboardClass()
       playerOneTurn = !playerOneTurn;
       turnsTaken++
     }

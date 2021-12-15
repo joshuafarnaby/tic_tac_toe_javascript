@@ -88,8 +88,19 @@ body {
   border-bottom: none;
 }
 
+/* .game-board.x .board-square:hover:before,
+.game-board.x .board-square:hover:after {
+  content: '';
+  position: absolute;
+  width: calc(var(--token-size) * 0.15);
+  height: var(--token-size);
+  background-color: var(--x-token-color);
+} */
+
 .board-square.x::before,
-.board-square.x::after {
+.board-square.x::after,
+.game-board.x .board-square:not(.x):not(.o):hover:before,
+.game-board.x .board-square:not(.x):not(.o):hover:after {
   content: '';
   position: absolute;
   width: calc(var(--token-size) * 0.15);
@@ -97,16 +108,20 @@ body {
   background-color: var(--x-token-color);
 }
 
-.board-square.x::before {
+.board-square.x::before,
+.game-board.x .board-square:not(.x):not(.o):hover:before {
   transform: rotate(45deg);
 }
 
-.board-square.x::after {
+.board-square.x::after,
+.game-board.x .board-square:not(.x):not(.o):hover:after {
   transform: rotate(-45deg);
 }
 
 .board-square.o::before,
-.board-square.o::after {
+.board-square.o::after,
+.game-board.o .board-square:not(.x):not(.o):hover:before,
+.game-board.o .board-square:not(.x):not(.o):hover:after {
   content: '';
   position: absolute;
   border-radius: 50%;
@@ -115,12 +130,14 @@ body {
   background-color: var(--o-token-color);
 }
 
-.board-square.o::after {
+.board-square.o::after,
+.game-board.o .board-square:not(.x):not(.o):hover:after {
   transform: scale(0.7);
   background-color: #fefefe;
 }
 
-.board-square.o::before {
+.board-square.o::before,
+.game-board.o .board-square:not(.x):not(.o):hover:before {
   transform: scale(0.95);
 }
 
