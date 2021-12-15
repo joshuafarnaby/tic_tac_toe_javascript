@@ -27,6 +27,12 @@ const gameboard = (function () {
 
   const internalGameboard = () => _internalGameboard;
   const externalGameboard = () => _externalGameboard;
+  const setDefaultExternalGameboardClass = () => {
+    if (_externalGameboardParent.classList.contains('o')) {
+      _externalGameboardParent.classList.remove('o');
+    }
+    _externalGameboardParent.classList.add('x');
+  }
   const toggleExternalGameboardClass = () => {
     if (_externalGameboardParent.classList.contains('x')) {
       _externalGameboardParent.classList.remove('x');
@@ -64,6 +70,7 @@ const gameboard = (function () {
   return {
     internalGameboard,
     externalGameboard,
+    setDefaultExternalGameboardClass,
     toggleExternalGameboardClass,
     updateExternalGameboard,
     enableExternalGameboard,
@@ -161,6 +168,7 @@ const gameController = (function () {
   const externalGameboard = gameboard.externalGameboard();
 
   const {
+    setDefaultExternalGameboardClass,
     toggleExternalGameboardClass,
     updateExternalGameboard,
     enableExternalGameboard,
@@ -186,8 +194,11 @@ const gameController = (function () {
     hideGameResult();
     resetGameboard();
     restartBtn.removeEventListener('click', resetGame);
+    setDefaultExternalGameboardClass();
     enableExternalGameboard()
   }
+
+  setDefaultExternalGameboardClass();
 
   const initiateTurn = (event) => {
     const targetPosition = event.target.getAttribute('data-square');

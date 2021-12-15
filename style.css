@@ -12,6 +12,7 @@
   --board-square-size: 100px;
   --token-size: calc(var(--board-square-size) * 0.9);
   --x-token-color: #ff4b4b;
+  --x-token-fade-color: #ff4b4b5d;
   --o-token-color: #2d93f3;
 }
 
@@ -88,15 +89,6 @@ body {
   border-bottom: none;
 }
 
-/* .game-board.x .board-square:hover:before,
-.game-board.x .board-square:hover:after {
-  content: '';
-  position: absolute;
-  width: calc(var(--token-size) * 0.15);
-  height: var(--token-size);
-  background-color: var(--x-token-color);
-} */
-
 .board-square.x::before,
 .board-square.x::after,
 .game-board.x .board-square:not(.x):not(.o):hover:before,
@@ -139,6 +131,11 @@ body {
 .board-square.o::before,
 .game-board.o .board-square:not(.x):not(.o):hover:before {
   transform: scale(0.95);
+}
+
+.player-container .board-square.x,
+.player-container .board-square.o {
+  cursor: auto;
 }
 
 .board-square.x,
